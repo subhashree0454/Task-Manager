@@ -33,13 +33,13 @@ Get started in minutes with a robust and persistent PostgreSQL database.
 ## Screenshots
 ### | Login Page |
 
-![Login](/TaskManagement/img/login.png)
+![Login](img/login.png)
 
 ###  Register Page |
-![Register](/TaskManagement/img/register.png)
+![Register](img/register.png)
   
 ### Home Dashboard |
-![Home](/TaskManagement/img/home.png)
+![Home](img/home.png)
 ## Setup Guide
 
 Follow these steps to get TaskFlow running on your local machine.
@@ -210,7 +210,8 @@ Task-Management/
 - Double-check the database name, username, and password in `application.properties`.
 - Make sure you have granted the correct privileges to the `taskflow_user`.
 **"Access denied for user" error:**
-- This means the credentials in `application.properties` do not match the user you created in PostgreSQL. Re-check the username and password.
+- This means the credentials in `application.properties`
+- do not match the user you created in PostgreSQL. Re-check the username and password.
 ---
 
 Made with passion by Rajeev • 2025
