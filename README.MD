@@ -32,11 +32,11 @@ Get started in minutes with a robust and persistent PostgreSQL database.
 
 ## Screenshots
 ### | Login Page |
-|---|---|---|
-| ![Login](/TaskManagement/img/login.png)
+
+![Login](/TaskManagement/img/login.png)
 
 ###  Register Page |
- ![Register](/TaskManagement/img/register.png)
+![Register](/TaskManagement/img/register.png)
   
 ### Home Dashboard |
 ![Home](/TaskManagement/img/home.png)
