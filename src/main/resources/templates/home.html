@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - My Tasks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-purple-600">TaskFlow</h1>
+            <div class="flex items-center gap-6">
+                <span class="text-lg">Hello, <strong th:text="${session.user.username}">User</strong>!</span>
+                <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-8">
+        <h2 class="text-4xl font-bold text-gray-800 mb-8">My Tasks</h2>
+
+        <!-- Add New Task Form -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <form action="/add-task" method="post" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <input name="title" placeholder="Task title..." required class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                <input name="description" placeholder="Description (optional)" class="px-4 py-3 border rounded-lg">
+                <select name="status" class="px-4 py-3 border rounded-lg">
+                    <option value="TODO">To Do</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="DONE">Done</option>
+                </select>
+                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg">Add Task</button>
+            </form>
+        </div>
+
+        <!-- Tasks List -->
+        <div th:each="task : ${tasks}"
+             class="bg-white p-8 rounded-xl shadow-md mb-6 transition hover:shadow-xl"
+             th:classappend="${task.status == 'DONE' ? 'border-l-8 border-green-500' : (task.status == 'IN_PROGRESS' ? 'border-l-8 border-yellow-500' : 'border-l-8 border-red-500')}">
+
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold text-gray-800" th:text="${task.title}">Sample Task</h3>
+                    <p class="text-gray-600 mt-2" th:text="${task.description} ?: 'No description'">No description</p>
+
+                    <!-- Status Badge -->
+                    <span th:switch="${task.status}">
+                        <span th:case="DONE" class="inline-block mt-4 px-6 py-2 rounded-full bg-green-500 text-white font-bold text-sm">DONE</span>
+                        <span th:case="IN_PROGRESS" class="inline-block mt-4 px-6 py-2 rounded-full bg-yellow-500 text-white font-bold text-sm">IN PROGRESS</span>
+                        <span th:case="*" class="inline-block mt-4 px-6 py-2 rounded-full bg-red-500 text-white font-bold text-sm">TODO</span>
+                    </span>
+
+                    <!-- CREATED TIMESTAMP - BEAUTIFUL & FORMATTED -->
+                    <p class="text-sm text-gray-500 mt-4">
+                        <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Created <span th:text="${#temporals.format(task.createdAt, 'dd MMM yyyy - HH:mm')}">01 Jan 2025 - 12:30</span>
+                    </p>
+                </div>
+
+                <div class="flex gap-4 mt-4">
+                    <a th:href="@{/edit-task/{id}(id=${task.id})}"
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">Edit</a>
+                    <form action="/delete-task" method="post" class="inline">
+                        <input type="hidden" name="taskId" th:value="${task.id}">
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${tasks == null or #lists.isEmpty(tasks)}" class="text-center py-32">
+            <p class="text-4xl text-gray-400 font-light">No tasks yet. Create your first one above!</p>
+        </div>
+    </div>
+</body>
+</html>
