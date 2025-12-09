@@ -1,6 +1,7 @@
 package com.taskmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,6 @@ import com.taskmanagement.model.Task;
 import com.taskmanagement.model.User;
 import com.taskmanagement.service.TaskService;
 import com.taskmanagement.service.UserService;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TaskController {
@@ -41,24 +40,14 @@ public class TaskController {
 		return "redirect:/login";
 	}
 
-	@PostMapping("/login")
-	public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session,
-			Model model) {
-		User user = userService.findUserByUsername(username);
-		if (user != null && user.getPassword().equals(password)) {
-			session.setAttribute("user", user);
-			return "redirect:/home";
-		}
-		model.addAttribute("error", "Wrong username or password");
-		return "login";
-	}
-
 	@GetMapping("/home")
-	public String home(HttpSession session, Model model) {
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
+	public String home(Authentication authentication, Model model) {
+		if (authentication == null || authentication.getName() == null) {
 			return "redirect:/login";
 		}
+
+		String username = authentication.getName();
+		User user = userService.findUserByUsername(username);
 
 		model.addAttribute("tasks", taskService.findByUserId(user.getId()));
 		return "home";
@@ -66,8 +55,8 @@ public class TaskController {
 
 	@PostMapping("/add-task")
 	public String addTask(@RequestParam String title, @RequestParam String description, @RequestParam String status,
-			HttpSession session) {
-		User user = (User) session.getAttribute("user");
+			Authentication auth) {
+		User user = userService.findUserByUsername(auth.getName());
 		Task task = new Task(title, description, status, user);
 		taskService.save(task);
 		return "redirect:/home";
@@ -94,11 +83,5 @@ public class TaskController {
 	public String delete(@RequestParam Long taskId) {
 		taskService.delete(taskId);
 		return "redirect:/home";
-	}
-
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/login";
 	}
 }
