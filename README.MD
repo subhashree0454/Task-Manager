@@ -32,6 +32,20 @@ No JavaScript. Fully server-side rendered. Production-ready.
 - **Templating**: Thymeleaf
 - **Styling**: Tailwind CSS (via CDN)
 - **Build Tool**: Maven
+- **Java**: 17+ (Java 25 recommended)
+
+## Core Endpoints & Navigation
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| `GET`  | `/`      | Login Page / Index | Public |
+| `GET`  | `/register` | User Registration Page | Public |
+| `POST` | `/register` | Create a new account | Public |
+| `GET`  | `/home`  | User Dashboard (Task List) | Logged In |
+| `POST` | `/add-task` | Create a new task | Logged In |
+| `GET`  | `/edit-task/{id}` | Edit task form | Logged In |
+| `POST` | `/edit-task/{id}` | Update task details | Logged In |
+| `POST` | `/delete-task` | Remove a task | Logged In |
 
 ## Quick Setup (5 Minutes)
 
@@ -65,17 +79,33 @@ spring.jpa.show-sql=true
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 ```
 
-### 5. Run the App
+### 5. Production Configuration (Environment Variables)
+For security, avoid hardcoding credentials. You can override properties using Environment Variables:
+
+| Variable | Description |
+|----------|-------------|
+| `SPRING_DATASOURCE_URL` | DB Connection String |
+| `SPRING_DATASOURCE_USERNAME` | DB Username |
+| `SPRING_DATASOURCE_PASSWORD` | DB Password |
+
+Example:
+```bash
+export SPRING_DATASOURCE_URL=jdbc:postgresql://your-host:5432/task_db
+export SPRING_DATASOURCE_USERNAME=prod_user
+export SPRING_DATASOURCE_PASSWORD=secure_password123
+```
+
+### 6. Run the App
 ```bash
 ./mvnw spring-boot:run
 ```
 
 Open → [http://localhost:8080](http://localhost:8080)
 
-### 6. Get Started!
-1. Go to `/register` → Create account
-2. Login → Welcome to your personal dashboard!
-3. Start adding tasks
+### 7. Development Tips
+- **DevTools**: The project includes `spring-boot-devtools`, so changes will trigger an automatic restart.
+- **Port**: To change the default port, add `-Dspring-boot.run.arguments=--server.port=9090` to the run command.
+- **Database Reset**: Change `spring.jpa.hibernate.ddl-auto` to `create-drop` in `application.properties` to clear the DB on every restart (careful!).
 
 ## Project Structure
 ```
