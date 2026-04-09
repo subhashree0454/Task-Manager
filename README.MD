@@ -1,10 +1,10 @@
-# TaskFlow - Your Personal Task Manager
+# Task-Manager - Your Personal Task Manager
 
 A **beautiful, secure, and fully functional** Task Management Web App built with **Spring Boot 3**, **Spring Security**, **Thymeleaf**, **PostgreSQL**, and **Tailwind CSS**.
 
 No JavaScript. Fully server-side rendered. Production-ready.
 
-![TaskFlow](img/home.png)
+![Task-Manager](img/home.png)
 
 ## Features
 
@@ -42,7 +42,7 @@ No JavaScript. Fully server-side rendered. Production-ready.
 
 ### 2. Clone the Project
 ```bash
-git clone https://github.com/imrajeevnayan/Task-Management.git
+git clone https://github.com/subhashree0454/Task-Manager.git
 cd Task-Management
 ```
 
@@ -139,9 +139,8 @@ Live in minutes!
 - | Database error              | Verify PostgreSQL is running & credentials correct |
 
 ---
-**Made with passion by Rajeev • 2025**
+**Made with passion by Subhashree • 2026**
 
 
 **Star this repo if you love it!**  
 
-# Task-Manager
