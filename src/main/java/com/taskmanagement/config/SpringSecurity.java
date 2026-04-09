@@ -13,11 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurity {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-
-				.csrf(csrf -> csrf.disable())
+		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/login", "/register", "/css/**", "/img/**")
-
 						.permitAll().anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
 						.defaultSuccessUrl("/home", true).permitAll())
